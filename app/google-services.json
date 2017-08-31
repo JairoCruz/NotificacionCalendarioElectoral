@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "239130950442",
+    "firebase_url": "https://notificacioncalenelectoral.firebaseio.com",
+    "project_id": "notificacioncalenelectoral",
+    "storage_bucket": "notificacioncalenelectoral.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239130950442:android:759bb85eec9e1625",
+        "android_client_info": {
+          "package_name": "com.tse.notificacioncalendarioelectoral"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239130950442-bg138cpik7tkcbjfk7rudkc3jho7ag9l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tse.notificacioncalendarioelectoral",
+            "certificate_hash": "035efc1a07e09caf7f544e2406e14fd26f5be759"
+          }
+        },
+        {
+          "client_id": "239130950442-ivsqddq94mbe081loantlehshfrur416.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCe09q0RZ4hn-gZKQqOqd1gQVb-JJKaJg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239130950442-ivsqddq94mbe081loantlehshfrur416.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NotificacionCalendarioElectoral</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_email">Introduzca su email</string>
+    <string name="hint_password">Introduzca su password</string>
+    <string name="btn_login">Iniciar session</string>
+</resources>
