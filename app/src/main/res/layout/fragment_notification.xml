@@ -9,27 +9,26 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_notifications_list"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        />
+        tools:layout_editor_absoluteY="8dp" />
 
     <LinearLayout
         android:id="@+id/noMessages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerInParent="true"
+        android:orientation="vertical"
         tools:visibility="gone">
 
         <ImageView
@@ -39,7 +38,7 @@
             android:layout_gravity="center"
             android:scaleType="fitXY"
             android:src="@drawable/ic_notifications_none_white_24dp"
-            android:tint="@android:color/darker_gray"/>
+            android:tint="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/noMessagesText"
@@ -49,8 +48,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/no_message_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -4,6 +4,7 @@ import com.tse.notificacioncalendarioelectoral.BasePresenter;
 import com.tse.notificacioncalendarioelectoral.BaseView;
 import com.tse.notificacioncalendarioelectoral.data.PushNotification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,9 +14,12 @@ import java.util.List;
 public interface PushNotificationContract {
 
     interface View extends BaseView<Presenter>{
-        void showNotifications(List<PushNotification> notifications);
+        void showNotifications(ArrayList<PushNotification> notifications);
 
-        void showNoMessagesView();
+        void showNoMessagesView(boolean emtpy);
+
+        void popPushNotification(PushNotification pushMessage);
+
     }
 
     interface Presenter extends BasePresenter {
@@ -23,5 +27,7 @@ public interface PushNotificationContract {
         void registerAppClient();
 
         void loadNotifications();
+
+        void savePushMessage(String title, String description, String expiryDate);
     }
 }
