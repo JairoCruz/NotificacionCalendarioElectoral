@@ -6,4 +6,5 @@
     <string name="hint_email">Introduzca su email</string>
     <string name="hint_password">Introduzca su password</string>
     <string name="btn_login">Iniciar session</string>
+    <string name="no_message_text">No hay notifivaciones</string>
 </resources>
