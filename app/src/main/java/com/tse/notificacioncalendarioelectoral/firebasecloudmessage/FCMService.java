@@ -1,5 +1,6 @@
 package com.tse.notificacioncalendarioelectoral.firebasecloudmessage;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -14,6 +15,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.notification.PushNotificationActivity;
 import com.tse.notificacioncalendarioelectoral.notification.PushNotificationFragment;
 
@@ -29,7 +31,7 @@ public class FCMService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "Mensaje recibido");
+        Log.i(TAG, "Mensaje recibido");
         displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
         sendNewPromoBroadcast(remoteMessage);
     }
@@ -51,12 +53,13 @@ public class FCMService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.support.design.R.drawable.navigation_empty_icon)
+                .setSmallIcon(R.drawable.ic_notifications_none_white_24dp)
                 .setContentTitle(notification.getTitle())
                 .setContentText(notification.getBody())
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

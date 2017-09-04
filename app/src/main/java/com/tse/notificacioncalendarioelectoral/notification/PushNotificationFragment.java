@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +54,12 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
             // obtener argumentos si los hubiere
         }
 
+        Log.i(PushNotificationFragment.class.getSimpleName(), "OnCreate");
         mNotificationReceiver = new BroadcastReceiver() {
+
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.e(PushNotificationFragment.class.getSimpleName(), "Data: " + intent.getStringExtra("title"));
                 String title = intent.getStringExtra("title");
                 String descripcion = intent.getStringExtra("description");
                 String expiryDate = intent.getStringExtra("expiry_date");
@@ -82,6 +86,7 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
     public void onResume() {
         super.onResume();
         mPresenter.start();
+        Log.i(PushNotificationFragment.class.getSimpleName(), "OnResume");
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mNotificationReceiver, new IntentFilter(ACTION_NOTIFY_NEW_PROMO));
     }
@@ -89,10 +94,12 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
     @Override
     public void onPause() {
         super.onPause();
-
+        Log.i(PushNotificationFragment.class.getSimpleName(), "OnPause");
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mNotificationReceiver);
 
     }
+
+
 
     @Override
     public void setPresenter(PushNotificationContract.Presenter presenter) {
