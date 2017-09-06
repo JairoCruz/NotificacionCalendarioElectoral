@@ -20,6 +20,8 @@ public interface PushNotificationContract {
 
         void popPushNotification(PushNotification pushMessage);
 
+        void showLogin();
+
     }
 
     interface Presenter extends BasePresenter {

@@ -34,6 +34,7 @@ public class FCMService extends FirebaseMessagingService {
         Log.i(TAG, "Mensaje recibido");
         displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
         sendNewPromoBroadcast(remoteMessage);
+
     }
 
     private void sendNewPromoBroadcast(RemoteMessage remoteMessage){
@@ -52,6 +53,8 @@ public class FCMService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notifications_none_white_24dp)
                 .setContentTitle(notification.getTitle())
@@ -60,7 +63,23 @@ public class FCMService extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(Notification.PRIORITY_MAX)
+                .setCategory(Notification.CATEGORY_EVENT)
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("Responsables: " + data.get("responsables_1") + " " + data.get("responsables_2") + " " + data.get("responsables_3") ))
                 .setContentIntent(pendingIntent);
+
+       /*
+       Set up InboxStyle notification
+       NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        String[] events = {"Queso", "Papas", "Helado", "Yogurt", "Vainilla","Soda"};
+        inboxStyle.setBigContentTitle("Event count tracker: ");
+
+        for (int i=0; i < events.length; i++){
+            inboxStyle.addLine(events[i]);
+            Log.e(TAG, "VALOR: " + events[i]);
+        }
+
+        notificationBuilder.setStyle(inboxStyle);*/
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

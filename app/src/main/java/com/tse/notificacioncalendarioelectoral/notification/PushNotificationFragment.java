@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.tse.notificacioncalendarioelectoral.MainActivity;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.PushNotification;
 
@@ -33,6 +36,7 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
     private RecyclerView mRecyclerView;
     private LinearLayout mNoMessagesView;
     private PushNotificationAdapter mNotificationsAdapter;
+    private Button btnSalir;
 
     private PushNotificationPresenter mPresenter;
 
@@ -78,6 +82,14 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
         mRecyclerView = (RecyclerView) root.findViewById(R.id.rv_notifications_list);
         mNoMessagesView = (LinearLayout) root.findViewById(R.id.noMessages);
         mRecyclerView.setAdapter(mNotificationsAdapter);
+        btnSalir = (Button) root.findViewById(R.id.btnLogout);
+        btnSalir.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                showLogin();
+            }
+        });
         return root;
     }
 
@@ -99,7 +111,10 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
 
     }
 
+    public void logout(View view){
 
+        FirebaseAuth.getInstance().signOut();
+    }
 
     @Override
     public void setPresenter(PushNotificationContract.Presenter presenter) {
@@ -124,5 +139,15 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
     @Override
     public void popPushNotification(PushNotification pushMessage) {
         mNotificationsAdapter.addItem(pushMessage);
+    }
+
+
+
+    @Override
+    public void showLogin() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getActivity(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

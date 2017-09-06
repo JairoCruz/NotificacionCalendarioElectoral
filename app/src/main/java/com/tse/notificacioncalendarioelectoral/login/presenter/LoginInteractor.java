@@ -62,7 +62,7 @@ public class LoginInteractor {
     private boolean isValidPassword(String password, Callback callback){
         boolean isValid = true;
         if (TextUtils.isEmpty(password)){
-            callback.onPasswordError("Escribe tu contraseña");
+            callback.onPasswordError("La contraseña no puede estar vacia");
             isValid = false;
         }
 
@@ -72,12 +72,12 @@ public class LoginInteractor {
     private boolean isValidEmail(String email, Callback callback){
         boolean isValid = true;
         if (TextUtils.isEmpty(email)){
-            callback.onEmailError("Escribe tu correo");
+            callback.onEmailError("El email no puede estar vacio");
             isValid = false;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            callback.onEmailError("Correo no Valido");
+            callback.onEmailError("El email es invalido");
             isValid = false;
         }
         return isValid;
