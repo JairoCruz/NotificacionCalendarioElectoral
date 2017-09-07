@@ -37,6 +37,7 @@ public class fragment_login extends Fragment implements LoginContract.View {
     private TextInputEditText txtmPassword;
     private Button btnSignInButton;
     private View prsLoginProgress;
+    private View constraintLayoutLogin;
     private TextInputLayout txlEmailError;
     private TextInputLayout txlPasswordError;
 
@@ -74,7 +75,11 @@ public class fragment_login extends Fragment implements LoginContract.View {
                 if (user != null){
                     showPushNotifications();
                 } else {
+
+
                     Log.e(fragment_login.class.getSimpleName(), "Usuario no logi");
+
+
                 }
             }
         };
@@ -86,6 +91,8 @@ public class fragment_login extends Fragment implements LoginContract.View {
 
         View root = inflater.inflate(R.layout.fragment_fragment_login, container, false);
         prsLoginProgress = root.findViewById(R.id.login_progress);
+        constraintLayoutLogin = root.findViewById(R.id.cl_login);
+
 
         txtmEmail = (TextInputEditText) root.findViewById(R.id.txtEmail);
         txtmPassword = (TextInputEditText) root.findViewById(R.id.txtPassword);
@@ -194,7 +201,9 @@ public class fragment_login extends Fragment implements LoginContract.View {
 
     @Override
     public void showProgress(boolean show) {
+        constraintLayoutLogin.setVisibility(show ? View.GONE : View.VISIBLE);
         prsLoginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+
     }
 
     @Override
@@ -217,6 +226,7 @@ public class fragment_login extends Fragment implements LoginContract.View {
         startActivity(new Intent(getActivity(), PushNotificationActivity.class));
         getActivity().finish();
     }
+
 
     @Override
     public void showGooglePlayServicesDialog(int errorCode) {

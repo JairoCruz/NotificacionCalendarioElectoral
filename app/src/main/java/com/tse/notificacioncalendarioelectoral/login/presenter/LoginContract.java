@@ -13,6 +13,7 @@ public interface LoginContract {
 
         void showProgress(boolean show);
 
+
         void setEmailError(String error);
 
         void setPasswordError(String error);
