@@ -22,6 +22,8 @@ public interface LoginContract {
 
         void showPushNotifications();
 
+        void showCalendario();
+
         void showGooglePlayServicesDialog(int errorCode);
 
         void showGooglePlayServicesError();

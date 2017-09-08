@@ -66,7 +66,8 @@ public class LoginPresenter implements LoginContract.Presenter, LoginInteractor.
     @Override
     public void onAuthSuccess() {
 
-        mLoginView.showPushNotifications();
+        //mLoginView.showPushNotifications();
+        mLoginView.showCalendario();
 
     }
 }

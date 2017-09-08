@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.tse.notificacioncalendarioelectoral.calendario.CalendarActivity;
 import com.tse.notificacioncalendarioelectoral.login.presenter.LoginContract;
 import com.tse.notificacioncalendarioelectoral.login.presenter.LoginPresenter;
 import com.tse.notificacioncalendarioelectoral.notification.PushNotificationActivity;
@@ -73,7 +74,8 @@ public class fragment_login extends Fragment implements LoginContract.View {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    showPushNotifications();
+                    // showPushNotifications();
+                    showCalendario();
                 } else {
 
 
@@ -224,6 +226,12 @@ public class fragment_login extends Fragment implements LoginContract.View {
     @Override
     public void showPushNotifications() {
         startActivity(new Intent(getActivity(), PushNotificationActivity.class));
+        getActivity().finish();
+    }
+
+    @Override
+    public void showCalendario() {
+        startActivity(new Intent(getActivity(), CalendarActivity.class));
         getActivity().finish();
     }
 
