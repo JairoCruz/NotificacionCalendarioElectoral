@@ -36,7 +36,6 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
     private RecyclerView mRecyclerView;
     private LinearLayout mNoMessagesView;
     private PushNotificationAdapter mNotificationsAdapter;
-    private Button btnSalir;
 
     private PushNotificationPresenter mPresenter;
 
@@ -82,14 +81,6 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
         mRecyclerView = (RecyclerView) root.findViewById(R.id.rv_notifications_list);
         mNoMessagesView = (LinearLayout) root.findViewById(R.id.noMessages);
         mRecyclerView.setAdapter(mNotificationsAdapter);
-        btnSalir = (Button) root.findViewById(R.id.btnLogout);
-        btnSalir.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                showLogin();
-            }
-        });
         return root;
     }
 
@@ -111,10 +102,7 @@ public class PushNotificationFragment extends Fragment implements PushNotificati
 
     }
 
-    public void logout(View view){
 
-        FirebaseAuth.getInstance().signOut();
-    }
 
     @Override
     public void setPresenter(PushNotificationContract.Presenter presenter) {
