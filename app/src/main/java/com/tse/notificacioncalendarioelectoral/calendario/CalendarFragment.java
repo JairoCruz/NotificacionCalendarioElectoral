@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ServerValue;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.Calendario;
 
@@ -72,6 +73,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
 
         calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference);
         recyclerViewCalendar.setAdapter(calendarioAdapter);
+
+
 
     }
 }
