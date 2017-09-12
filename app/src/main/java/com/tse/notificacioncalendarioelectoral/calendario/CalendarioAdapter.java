@@ -41,8 +41,9 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         viewHolder.txtFechaFin.setText(model.getFECHA_FIN());
 
         try{
-            //fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
             int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
+            //fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
+            /*int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
 
             if (d == 0){
                 viewHolder.txtEstado.setText("En ejecucion" + d);
@@ -51,6 +52,15 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
                 viewHolder.txtEstado.setText("Inicia en: " + Integer.toString(d) + " dias"+ d);
                 viewHolder.txtEstado.setTextColor(Color.GRAY);
             } else {
+                viewHolder.txtEstado.setText("Finalizada" + d);
+                viewHolder.txtEstado.setTextColor(Color.RED);
+            }*/
+
+            if (isActive(model.getFECHA_INICIO(), model.getFECHA_FIN())){
+                viewHolder.txtEstado.setText("En ejecucion" + d);
+                viewHolder.txtEstado.setTextColor(Color.GREEN);
+            }
+            else {
                 viewHolder.txtEstado.setText("Finalizada" + d);
                 viewHolder.txtEstado.setTextColor(Color.RED);
             }
@@ -79,6 +89,19 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
             txtEstado = (TextView) itemView.findViewById(R.id.txtEstado);
 
         }
+    }
+
+    public boolean isActive(String Inicio, String Fin)throws ParseException{
+        boolean active = false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaInicio = dateFormat.parse(Inicio);
+        Date fechaFin = dateFormat.parse(Fin);
+        Date currentDate = Calendar.getInstance(TimeZone.getDefault()).getTime();
+        if ((currentDate.getTime() >= fechaInicio.getTime()) && (currentDate.getTime() <= fechaFin.getTime()) ){
+            active = true;
+        }
+
+        return active;
     }
 
     public int fechas(String inicio, String fin) throws ParseException{
