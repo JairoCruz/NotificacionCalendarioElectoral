@@ -1,7 +1,6 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
 import android.graphics.Color;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.Calendario;
 
@@ -17,8 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -37,32 +33,18 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
     protected void populateViewHolder(CalendarioViewHolder viewHolder, Calendario model, int position) {
 
         viewHolder.txtActividad.setText(model.getACTIVIDAD());
-        viewHolder.txtFechaInicio.setText(model.getFECHA_INICIO());
-        viewHolder.txtFechaFin.setText(model.getFECHA_FIN());
-
-        try{
-
-            if (isActive(model.getFECHA_INICIO(), model.getFECHA_FIN())){
-                viewHolder.txtEstado.setText("En ejecucion");
-                viewHolder.txtEstado.setTextColor(Color.GREEN);
-            }
-            else {
-
-                int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
-
-                if (d == 0) {
-                    viewHolder.txtEstado.setText("Inicia mañana");
-                    viewHolder.txtEstado.setTextColor(Color.BLUE);
-                } else if (d > 0 && d != 0) {
-                    viewHolder.txtEstado.setText("Inicia en: " + Integer.toString(d) + " dias");
-                    viewHolder.txtEstado.setTextColor(Color.GRAY);
-                } else {
-                    viewHolder.txtEstado.setText("Finalizada");
-                    viewHolder.txtEstado.setTextColor(Color.RED);
-                }
-            }
-        }catch (Exception e){
-            Log.e(CalendarioAdapter.class.getSimpleName(), e.getMessage());
+        viewHolder.txtFechaInicio.setText(model.getINICIO());
+        viewHolder.txtFechaFin.setText(model.getFIN());
+        Log.e("msg",model.getESTADO());
+        if (model.getESTADO().equalsIgnoreCase("EJECUCIÓN")){
+            viewHolder.txtEstado.setText("EN " + model.getESTADO());
+            viewHolder.txtEstado.setTextColor(Color.GREEN);
+        }else if (model.getESTADO().equalsIgnoreCase("FINALIZADA")){
+            viewHolder.txtEstado.setText(model.getESTADO());
+            viewHolder.txtEstado.setTextColor(Color.RED);
+        }else {
+            viewHolder.txtEstado.setText(model.getESTADO());
+            viewHolder.txtEstado.setTextColor(Color.GRAY);
         }
 
 

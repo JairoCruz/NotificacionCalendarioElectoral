@@ -1,17 +1,25 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
+import com.tse.notificacioncalendarioelectoral.MainActivity;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.Calendario;
 
@@ -45,6 +53,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         recyclerViewCalendar = (RecyclerView) viewFragment.findViewById(R.id.recyclerViewCalendario);
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(getActivity()));
         calendarContractPresenter.loadEventCalendar();
+        setHasOptionsMenu(true);
         return viewFragment;
     }
 
@@ -52,7 +61,33 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //calendarContractPresenter.loadEventCalendar();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_opciones, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.salir:
+                showLogin();
+                break;
+            case R.id.menu_filter:
+                showFilterPopUpMenu();
+                break;
+        }
+
+        return true;
+    }
+
+    public void showFilterPopUpMenu() {
+
+        PopupMenu popupMenu = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_filter));
+        popupMenu.getMenuInflater().inflate(R.menu.filter_calendario, popupMenu.getMenu());
+        popupMenu.show();
+
     }
 
     @Override
@@ -71,7 +106,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     @Override
     public void showEventCalendar(DatabaseReference reference) {
 
-        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference.orderByChild("FECHA_INICIO").startAt("1/9/2017").endAt("10/9/2017"));
+        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference.child("CALENDARIO"));
         recyclerViewCalendar.setAdapter(calendarioAdapter);
 
 
@@ -82,5 +117,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     public void onDestroy() {
         super.onDestroy();
         calendarioAdapter.cleanup();
+    }
+
+    public void showLogin() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getActivity(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

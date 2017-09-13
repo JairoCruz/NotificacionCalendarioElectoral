@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/TODOS"
+        android:title="@string/nav_todos"/>
+
+    <item android:id="@+id/EJECUCION"
+        android:title="@string/nav_ejecucion"/>
+
+    <item android:id="@+id/FINALIZADA"
+        android:title="@string/nav_finalizada"/>
+
+
+
+</menu>

@@ -22,4 +22,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_todos">TODAS</string>
+    <string name="nav_ejecucion">EN EJECUCIÓN</string>
+    <string name="nav_finalizada">FINALIZADAS</string>
+    <string name="menu_filter">FILTRO</string>
 </resources>

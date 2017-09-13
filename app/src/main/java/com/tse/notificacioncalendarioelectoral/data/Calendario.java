@@ -8,19 +8,21 @@ public class Calendario {
 
 
     private String ACTIVIDAD;
-    private String FECHA_INICIO;
-    private String FECHA_FIN;
-    private String RESPONSABLE;
+    private String INICIO;
+    private String FIN;
+    private String RESPONSABLES;
+    private String ESTADO;
 
     public Calendario() {
     }
 
 
-    public Calendario(String ACTIVIDAD, String FECHA_INICIO, String FECHA_FIN, String RESPONSABLE) {
+    public Calendario(String ACTIVIDAD, String FECHA_INICIO, String FECHA_FIN, String RESPONSABLES, String ESTADO) {
         this.ACTIVIDAD = ACTIVIDAD;
-        this.FECHA_INICIO = FECHA_INICIO;
-        this.FECHA_FIN = FECHA_FIN;
-        this.RESPONSABLE = RESPONSABLE;
+        this.INICIO = FECHA_INICIO;
+        this.FIN = FECHA_FIN;
+        this.RESPONSABLES = RESPONSABLES;
+        this.ESTADO = ESTADO;
     }
 
 
@@ -32,27 +34,36 @@ public class Calendario {
         this.ACTIVIDAD = ACTIVIDAD;
     }
 
-    public String getFECHA_INICIO() {
-        return FECHA_INICIO;
+    public String getINICIO() {
+        return INICIO;
     }
 
-    public void setFECHA_INICIO(String FECHA_INICIO) {
-        this.FECHA_INICIO = FECHA_INICIO;
+    public void setINICIO(String FECHA_INICIO) {
+        this.INICIO = FECHA_INICIO;
     }
 
-    public String getFECHA_FIN() {
-        return FECHA_FIN;
+    public String getFIN() {
+        return FIN;
     }
 
-    public void setFECHA_FIN(String FECHA_FIN) {
-        this.FECHA_FIN = FECHA_FIN;
+    public void setFIN(String FECHA_FIN) {
+        this.FIN = FECHA_FIN;
     }
 
-    public String getRESPONSABLE() {
-        return RESPONSABLE;
+    public String getRESPONSABLES() {
+        return RESPONSABLES;
     }
 
-    public void setRESPONSABLE(String RESPONSABLE) {
-        this.RESPONSABLE = RESPONSABLE;
+    public void setRESPONSABLES(String RESPONSABLE) {
+        this.RESPONSABLES = RESPONSABLE;
+    }
+
+
+    public String getESTADO() {
+        return ESTADO;
+    }
+
+    public void setESTADO(String ESTADO) {
+        this.ESTADO = ESTADO;
     }
 }
