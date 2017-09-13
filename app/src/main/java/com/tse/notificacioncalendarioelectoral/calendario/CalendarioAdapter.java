@@ -41,31 +41,26 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         viewHolder.txtFechaFin.setText(model.getFECHA_FIN());
 
         try{
-            int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
-            //fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
-            /*int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
-
-            if (d == 0){
-                viewHolder.txtEstado.setText("En ejecucion" + d);
-                viewHolder.txtEstado.setTextColor(Color.GREEN);
-            } else if(d > 0 && d != 0){
-                viewHolder.txtEstado.setText("Inicia en: " + Integer.toString(d) + " dias"+ d);
-                viewHolder.txtEstado.setTextColor(Color.GRAY);
-            } else {
-                viewHolder.txtEstado.setText("Finalizada" + d);
-                viewHolder.txtEstado.setTextColor(Color.RED);
-            }*/
 
             if (isActive(model.getFECHA_INICIO(), model.getFECHA_FIN())){
-                viewHolder.txtEstado.setText("En ejecucion" + d);
+                viewHolder.txtEstado.setText("En ejecucion");
                 viewHolder.txtEstado.setTextColor(Color.GREEN);
             }
             else {
-                viewHolder.txtEstado.setText("Finalizada" + d);
-                viewHolder.txtEstado.setTextColor(Color.RED);
-            }
-            //viewHolder.txtEstado.setText(Integer.toString(fechas(model.getFECHA_INICIO(), model.getFECHA_FIN())));
 
+                int d = fechas(model.getFECHA_INICIO(), model.getFECHA_FIN());
+
+                if (d == 0) {
+                    viewHolder.txtEstado.setText("Inicia mañana");
+                    viewHolder.txtEstado.setTextColor(Color.BLUE);
+                } else if (d > 0 && d != 0) {
+                    viewHolder.txtEstado.setText("Inicia en: " + Integer.toString(d) + " dias");
+                    viewHolder.txtEstado.setTextColor(Color.GRAY);
+                } else {
+                    viewHolder.txtEstado.setText("Finalizada");
+                    viewHolder.txtEstado.setTextColor(Color.RED);
+                }
+            }
         }catch (Exception e){
             Log.e(CalendarioAdapter.class.getSimpleName(), e.getMessage());
         }
@@ -110,10 +105,6 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         Date fechaFin = dateFormat.parse(fin);
         Date currentDate = Calendar.getInstance(TimeZone.getDefault()).getTime();
 
-        Log.e("ver", "v  " + dateFormat.format(fechaInicio) +  (currentDate.getTime() > fechaInicio.getTime()));
-        Log.e("ver", "fin  " + dateFormat.format(fechaFin) +  (currentDate.getTime() < fechaFin.getTime()));
-        Log.e("ver", "algo  " + dateFormat.format(fechaInicio) + ((int) ((fechaInicio.getTime() - currentDate.getTime()) / 86400000)));
-
 
         //int dias = ((int) ((fechaInicio.getTime() - currentDate.getTime()) / 86400000));
         int dias;
@@ -126,10 +117,6 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
 
         return dias;
 
-
-        //return dias;
-       // Log.e(CalendarioAdapter.class.getSimpleName(), "Hay " + dias);
-        //Log.e(CalendarioAdapter.class.getSimpleName(), "Fecha Actual " + dateFormat.format(currentDate));
     }
 
 }

@@ -71,10 +71,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     @Override
     public void showEventCalendar(DatabaseReference reference) {
 
-        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference);
+        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference.orderByChild("FECHA_INICIO").startAt("1/9/2017").endAt("10/9/2017"));
         recyclerViewCalendar.setAdapter(calendarioAdapter);
 
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        calendarioAdapter.cleanup();
     }
 }
