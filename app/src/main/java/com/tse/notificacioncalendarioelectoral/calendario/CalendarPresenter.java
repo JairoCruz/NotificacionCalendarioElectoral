@@ -18,6 +18,9 @@ public class CalendarPresenter implements CalendarContract.Presenter {
 
     private final CalendarContract.View calendarContractView;
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
 
     public CalendarPresenter(CalendarContract.View calendarContractView) {
         this.calendarContractView = calendarContractView;
@@ -32,9 +35,8 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     @Override
     public void loadEventCalendar() {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        calendarContractView.showEventCalendar(myRef);
+
+        calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
        /* myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -51,4 +53,21 @@ public class CalendarPresenter implements CalendarContract.Presenter {
         });*/
 
     }
+
+    @Override
+    public void filterEventCalendar(String filtro) {
+        switch (filtro){
+            case "TODOS":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
+                break;
+            case "EJECUCIÓN":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("ESTADO").equalTo("EJECUCIÓN"));
+                break;
+            case "FINALIZADA":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("ESTADO").equalTo("FINALIZADA"));
+                break;
+        }
+    }
+
+
 }

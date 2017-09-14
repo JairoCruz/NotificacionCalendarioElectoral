@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.tse.notificacioncalendarioelectoral.MainActivity;
 import com.tse.notificacioncalendarioelectoral.R;
@@ -82,10 +83,28 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         return true;
     }
 
+    @Override
     public void showFilterPopUpMenu() {
 
         PopupMenu popupMenu = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_filter));
         popupMenu.getMenuInflater().inflate(R.menu.filter_calendario, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.TODOS:
+                        calendarContractPresenter.filterEventCalendar("TODOS");
+                        break;
+                    case R.id.EJECUCION:
+                        calendarContractPresenter.filterEventCalendar("EJECUCIÓN");
+                        break;
+                    case  R.id.FINALIZADA:
+                        calendarContractPresenter.filterEventCalendar("FINALIZADA");
+                        break;
+                }
+                return true;
+            }
+        });
         popupMenu.show();
 
     }
@@ -104,10 +123,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     }
 
     @Override
-    public void showEventCalendar(DatabaseReference reference) {
+    public void showEventCalendar(Query reference) {
 
-        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference.child("CALENDARIO"));
+        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference);
         recyclerViewCalendar.setAdapter(calendarioAdapter);
+
 
 
 

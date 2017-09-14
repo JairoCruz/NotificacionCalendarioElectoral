@@ -50,6 +50,13 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
 
     }
 
+    @Override
+    public void onDataChanged() {
+        Log.e("calendario adapter", "el recycler cambio");
+
+
+    }
+
     public static class CalendarioViewHolder extends RecyclerView.ViewHolder{
 
         private TextView txtActividad;
