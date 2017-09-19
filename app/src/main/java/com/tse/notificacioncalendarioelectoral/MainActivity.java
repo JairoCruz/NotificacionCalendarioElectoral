@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements fragment_login.Ca
 
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
-
 
 
         fragment_login loginFragment = (fragment_login) getSupportFragmentManager().findFragmentById(R.id.fragmentLayoutLogin);

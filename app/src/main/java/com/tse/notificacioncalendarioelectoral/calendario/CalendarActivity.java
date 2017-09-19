@@ -1,9 +1,14 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,6 +25,9 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
+
+
+
         // Set Up Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -33,6 +41,12 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         new CalendarPresenter(calendarFragment);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("actividad calendario", "si cuando abro de nuevo");
     }
 
 
