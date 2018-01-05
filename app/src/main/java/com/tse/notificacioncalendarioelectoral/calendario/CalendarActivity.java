@@ -27,7 +27,6 @@ public class CalendarActivity extends AppCompatActivity {
 
 
 
-
         // Set Up Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -43,11 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
         new CalendarPresenter(calendarFragment);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("actividad calendario", "si cuando abro de nuevo");
-    }
+
 
 
     /*@Override

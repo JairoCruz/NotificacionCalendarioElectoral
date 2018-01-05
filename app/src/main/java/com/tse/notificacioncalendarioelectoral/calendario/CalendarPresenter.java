@@ -36,7 +36,7 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     public void loadEventCalendar() {
 
 
-        calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
+        calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("TIMESTAMP_INICIO").startAt(1514851200).endAt(1543190400));
        /* myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -57,7 +57,7 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     @Override
     public void filterEventCalendar(String filtro) {
         switch (filtro){
-            case "TODOS":
+            case "TODAS":
                 calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
                 break;
             case "EJECUCIÓN":
@@ -66,6 +66,10 @@ public class CalendarPresenter implements CalendarContract.Presenter {
             case "FINALIZADA":
                 calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("ESTADO").equalTo("FINALIZADA"));
                 break;
+            case "LIMPIAR_FILTRO":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("TIMESTAMP_INICIO").startAt(1514851200).endAt(1543190400));
+                break;
+
         }
     }
 

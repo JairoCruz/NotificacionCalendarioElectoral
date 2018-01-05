@@ -27,7 +27,11 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
 
     public CalendarioAdapter(Class<Calendario> modelClass, int modelLayout, Class<CalendarioViewHolder> viewHolderClass, Query query) {
         super(modelClass, modelLayout, viewHolderClass, query);
+
+
+
     }
+
 
     @Override
     protected void populateViewHolder(CalendarioViewHolder viewHolder, Calendario model, int position) {
@@ -35,7 +39,7 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         viewHolder.txtActividad.setText(model.getACTIVIDAD());
         viewHolder.txtFechaInicio.setText(model.getINICIO());
         viewHolder.txtFechaFin.setText(model.getFIN());
-        Log.e("msg",model.getESTADO());
+
         if (model.getESTADO().equalsIgnoreCase("EJECUCIÓN")){
             viewHolder.txtEstado.setText("EN " + model.getESTADO());
             viewHolder.txtEstado.setTextColor(Color.GREEN);
@@ -48,6 +52,8 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         }
 
 
+
+
     }
 
     @Override
@@ -55,7 +61,10 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Calendario, Calen
         Log.e("calendario adapter", "el recycler cambio");
 
 
+
     }
+
+
 
     public static class CalendarioViewHolder extends RecyclerView.ViewHolder{
 

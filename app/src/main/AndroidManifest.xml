@@ -40,7 +40,8 @@
 
 
 
-        <activity android:name=".calendario.CalendarActivity"></activity>
+        <activity android:name=".calendario.CalendarActivity"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

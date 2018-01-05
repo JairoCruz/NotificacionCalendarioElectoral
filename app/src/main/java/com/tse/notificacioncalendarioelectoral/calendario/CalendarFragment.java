@@ -3,6 +3,7 @@ package com.tse.notificacioncalendarioelectoral.calendario;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     RecyclerView recyclerViewCalendar;
 
 
+
+
     public CalendarFragment() {
         // Required empty public constructor
     }
@@ -50,24 +53,37 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View viewFragment = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerViewCalendar = (RecyclerView) viewFragment.findViewById(R.id.recyclerViewCalendario);
+
+
+
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         calendarContractPresenter.loadEventCalendar();
+
         setHasOptionsMenu(true);
+
+
+
         return viewFragment;
     }
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_opciones, menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -101,6 +117,9 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
                     case  R.id.FINALIZADA:
                         calendarContractPresenter.filterEventCalendar("FINALIZADA");
                         break;
+                    case  R.id.LIMPIAR:
+                        calendarContractPresenter.filterEventCalendar("LIMPIAR_FILTRO");
+                        break;
                 }
                 return true;
             }
@@ -128,10 +147,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference);
         recyclerViewCalendar.setAdapter(calendarioAdapter);
 
-
-
-
     }
+
+
+
+
 
     @Override
     public void onDestroy() {

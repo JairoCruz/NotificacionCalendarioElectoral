@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tse.notificacioncalendarioelectoral.login.presenter.LoginContract;
 import com.tse.notificacioncalendarioelectoral.login.presenter.LoginInteractor;
 import com.tse.notificacioncalendarioelectoral.login.presenter.LoginPresenter;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements fragment_login.Ca
         }
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         LoginInteractor loginInteractor = new LoginInteractor(getApplicationContext(), mFirebaseAuth);
         new LoginPresenter(loginFragment, loginInteractor);

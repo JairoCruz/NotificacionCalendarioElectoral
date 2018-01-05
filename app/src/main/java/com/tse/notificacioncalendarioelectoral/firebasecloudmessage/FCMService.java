@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class FCMService extends FirebaseMessagingService {
 
+    final static  String GROUP_KEY_NOTIFICATION = "notification_calendario_electoral";
 
 
     // Segun la documentacion de firebase cuando la app esta en segundo plano, los datos estos datos son los de remoteMessage.getData de la notificacion se pasan al intent de la actividad
@@ -41,8 +42,8 @@ public class FCMService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.i(TAG, "texto " + remoteMessage.getData());
-        //displayNotification(remoteMessage.getNotification(), remoteMessage.getData());
+        //Log.i(TAG, "texto " + remoteMessage.getData());
+        displayNotification(remoteMessage.getData());
         //sendNewPromoBroadcast(remoteMessage);
 
 
@@ -60,13 +61,22 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void handleIntent(Intent intent) {
        // super.handleIntent(intent);
+
+        // Recuperar los extras del intent
         Bundle bundle = intent.getExtras();
-        RemoteMessage remo = new RemoteMessage.Builder("algo")
-                .addData("titulo", bundle.getString("estado"))
+
+        // Construir un objeto RemoteMessage
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("remoteMsg")
+                .addData("titleNotification", bundle.getString("gcm.notification.title"))
+                .addData("bodyNotification", bundle.getString("gcm.notification.body"))
+                .addData("dataEstado", bundle.getString("estado"))
+                .addData("dataResponsables", bundle.getString("responsables"))
+                .addData("dataIdActividad", bundle.getString("idActividad"))
+                .addData("dataIdNotification", bundle.getString("idNotification"))
                 .build();
 
 
-        onMessageReceived(remo);
+        onMessageReceived(remoteMessage);
         //displayNotificationBackground(bundle);
         //Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.title"));
        // Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.body"));
@@ -108,47 +118,52 @@ public class FCMService extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
-    private void displayNotification(RemoteMessage.Notification notification, Map<String, String> data){
+    private void displayNotification(Map<String, String> data){
+
+
+
+        int idNotification = Integer.parseInt(data.get("dataIdNotification"));
 
         Intent intent = new Intent(this, CalendarActivity.class);
-        intent.putExtra("texto","hola desde notificacion");
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("idActividad",data.get("dataIdActividad"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
 
-        String msg = notification.getBody() + " "  + data.get("estado") + ". " + "Los responsables de la actividad son: " + data.get("responsables");
+        String msg = data.get("bodyNotification") + "\n"  + data.get("dataEstado") + ". \n" + "Responsables: " + data.get("dataResponsables");
         Log.e(TAG, "VALOR: " + msg);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notifications_none_white_24dp)
-                .setContentTitle(notification.getTitle())
-                .setContentText(notification.getBody())
+                .setContentTitle(data.get("titleNotification"))
+                .setContentText(data.get("bodyNotification"))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setCategory(Notification.CATEGORY_EVENT)
                 .setColor(getResources().getColor(R.color.colorPrimary))
-                //.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setGroup(GROUP_KEY_NOTIFICATION)
                 .setContentIntent(pendingIntent);
 
            //Set up InboxStyle notification
-           NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-            String[] events = {"Queso", "Papas", "Helado", "Yogurt", "Vainilla","Soda"};
-            inboxStyle.setBigContentTitle(notification.getTitle());
+          // NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+           // String[] events = {"Queso", "Papas", "Helado", "Yogurt", "Vainilla","Soda"};
+            //inboxStyle.setBigContentTitle(notification.getTitle());
 
-           for (int i=0; i < events.length; i++){
+           /*for (int i=0; i < events.length; i++){
                 inboxStyle.addLine(events[i]);
               //Log.e(TAG, "VALOR: " + data.get("fecha_inicio"));
             }
 
-        notificationBuilder.setStyle(inboxStyle);
+        notificationBuilder.setStyle(inboxStyle);*/
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(idNotification, notificationBuilder.build());
 
     }
 
