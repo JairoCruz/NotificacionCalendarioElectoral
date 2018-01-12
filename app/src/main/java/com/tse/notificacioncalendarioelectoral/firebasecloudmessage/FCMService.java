@@ -58,7 +58,7 @@ public class FCMService extends FirebaseMessagingService {
     * aparte de la que yo he personalizado, y es de la que se menciona en la documentacion de firebase cuando la app esta en background, entonces para evitar
     * eso he decidido mejor comentarla y personalizar el comportamiento.
     * */
-    @Override
+    /*@Override
     public void handleIntent(Intent intent) {
        // super.handleIntent(intent);
 
@@ -82,7 +82,8 @@ public class FCMService extends FirebaseMessagingService {
        // Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.body"));
 
 
-    }
+    }*/
+
 
     private void displayNotificationBackground(Bundle extras){
         Intent intentCalendar = new Intent(this, CalendarActivity.class);

@@ -16,10 +16,12 @@ import com.tse.notificacioncalendarioelectoral.data.Calendario;
 public class CalendarPresenter implements CalendarContract.Presenter {
 
 
+
     private final CalendarContract.View calendarContractView;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+
 
 
     public CalendarPresenter(CalendarContract.View calendarContractView) {
@@ -57,7 +59,8 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     @Override
     public void filterEventCalendar(String filtro) {
         switch (filtro){
-            case "TODAS":
+            case "TODOS":
+                Log.e("todas", filtro);
                 calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
                 break;
             case "EJECUCIÓN":

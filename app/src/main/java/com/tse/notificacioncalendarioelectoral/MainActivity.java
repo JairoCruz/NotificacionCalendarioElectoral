@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements fragment_login.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
 

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
@@ -56,7 +57,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
 
 
         View viewFragment = inflater.inflate(R.layout.fragment_calendar, container, false);
-        recyclerViewCalendar = (RecyclerView) viewFragment.findViewById(R.id.recyclerViewCalendario);
+        recyclerViewCalendar = viewFragment.findViewById(R.id.recyclerViewCalendario);
 
 
 
@@ -141,23 +142,23 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
 
     }
 
+
+
     @Override
     public void showEventCalendar(Query reference) {
 
-        calendarioAdapter = new CalendarioAdapter(Calendario.class, R.layout.card_item_calendendar,CalendarioAdapter.CalendarioViewHolder.class, reference);
+
+        FirebaseRecyclerOptions<Calendario> options = new FirebaseRecyclerOptions.Builder<Calendario>()
+                .setQuery(reference, Calendario.class)
+                // Establecer esta propieda hace que automaticamente se maneje el onStart y onStop en el ciclo de vida del adaptador
+                .setLifecycleOwner(this)
+                .build();
+        calendarioAdapter = new CalendarioAdapter(options);
         recyclerViewCalendar.setAdapter(calendarioAdapter);
 
     }
 
 
-
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        calendarioAdapter.cleanup();
-    }
 
     public void showLogin() {
         FirebaseAuth.getInstance().signOut();
