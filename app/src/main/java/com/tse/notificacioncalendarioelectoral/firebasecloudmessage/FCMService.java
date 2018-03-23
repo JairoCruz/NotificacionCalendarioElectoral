@@ -58,32 +58,31 @@ public class FCMService extends FirebaseMessagingService {
     * aparte de la que yo he personalizado, y es de la que se menciona en la documentacion de firebase cuando la app esta en background, entonces para evitar
     * eso he decidido mejor comentarla y personalizar el comportamiento.
     * */
-    /*@Override
-    public void handleIntent(Intent intent) {
-       // super.handleIntent(intent);
-
-        // Recuperar los extras del intent
-        Bundle bundle = intent.getExtras();
-
-        // Construir un objeto RemoteMessage
-        RemoteMessage remoteMessage = new RemoteMessage.Builder("remoteMsg")
-                .addData("titleNotification", bundle.getString("gcm.notification.title"))
-                .addData("bodyNotification", bundle.getString("gcm.notification.body"))
-                .addData("dataEstado", bundle.getString("estado"))
-                .addData("dataResponsables", bundle.getString("responsables"))
-                .addData("dataIdActividad", bundle.getString("idActividad"))
-                .addData("dataIdNotification", bundle.getString("idNotification"))
-                .build();
-
-
-        onMessageReceived(remoteMessage);
-        //displayNotificationBackground(bundle);
-        //Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.title"));
-       // Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.body"));
-
-
-    }*/
-
+//    @Override
+//    public void handleIntent(Intent intent) {
+//       // super.handleIntent(intent);
+//
+//        // Recuperar los extras del intent
+//        Bundle bundle = intent.getExtras();
+//
+//        // Construir un objeto RemoteMessage
+//        RemoteMessage remoteMessage = new RemoteMessage.Builder("remoteMsg")
+//                .addData("titleNotification", bundle.getString("gcm.notification.title"))
+//                .addData("bodyNotification", bundle.getString("gcm.notification.body"))
+//                .addData("dataEstado", bundle.getString("estado"))
+//                .addData("dataResponsables", bundle.getString("responsables"))
+//                .addData("dataIdActividad", bundle.getString("idActividad"))
+//                .addData("dataIdNotification", bundle.getString("idNotification"))
+//                .build();
+//
+//
+//        onMessageReceived(remoteMessage);
+//        //displayNotificationBackground(bundle);
+//        //Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.title"));
+//       // Log.e(FCMService.class.getSimpleName(), bundle.getString("gcm.notification.body"));
+//
+//
+//    }
 
     private void displayNotificationBackground(Bundle extras){
         Intent intentCalendar = new Intent(this, CalendarActivity.class);
