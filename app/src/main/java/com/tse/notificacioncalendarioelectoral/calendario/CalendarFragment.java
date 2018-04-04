@@ -243,10 +243,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         return new RecyclerSectionItemDecoration.SectionCallback() {
             @Override
             public boolean isSection(int position) {
-              // boolean a = position == 0 || people.get(position).getINICIO_MES_T().charAt(0) != people.get(position - 1).getINICIO_MES_T().charAt(0);
-//                char b = people.get(position - 1).getINICIO_MES_T().charAt(0);
-               // Log.e("is Section", " " + position + " " + a );
-                return position == 0 || people.get(position).getINICIO_MES_T().charAt(0) != people.get(position - 1).getINICIO_MES_T().charAt(0);
+               // return position == 0 || people.get(position).getINICIO_MES_T().charAt(0) != people.get(position - 1).getINICIO_MES_T().charAt(0);
+               return position == 0 || !people.get(position).getINICIO_MES_T().equals(people.get(position - 1).getINICIO_MES_T().toString());
             }
 
             @Override
