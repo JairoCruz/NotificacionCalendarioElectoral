@@ -26,13 +26,14 @@ public class Actividad implements Comparable<Actividad> {
     private long TIMESTAMP_INICIO;
     private long TIMESTAMP_FIN;
     private Integer FASE;
+    private String ESTADO;
 
 
     public Actividad() {
     }
 
 
-    public Actividad(String ACTIVIDAD, String INICIO, String FIN, String RESPONSABLES, Integer INICIO_DIA, String INICIO_MES_T, Integer INICIO_MES, Integer INICIO_AÑO, Integer FIN_DIA, Integer FIN_MES, String FIN_MES_T, Integer FIN_AÑO, long TIMESTAMP_INICIO, long TIMESTAMP_FIN, Integer FASE) {
+    public Actividad(String ACTIVIDAD, String INICIO, String FIN, String RESPONSABLES, Integer INICIO_DIA, String INICIO_MES_T, Integer INICIO_MES, Integer INICIO_AÑO, Integer FIN_DIA, Integer FIN_MES, String FIN_MES_T, Integer FIN_AÑO, long TIMESTAMP_INICIO, long TIMESTAMP_FIN, Integer FASE, String ESTADO) {
         this.ACTIVIDAD = ACTIVIDAD;
         this.INICIO = INICIO;
         this.FIN = FIN;
@@ -48,6 +49,7 @@ public class Actividad implements Comparable<Actividad> {
         this.TIMESTAMP_INICIO = TIMESTAMP_INICIO;
         this.TIMESTAMP_FIN = TIMESTAMP_FIN;
         this.FASE = FASE;
+        this.ESTADO = ESTADO;
     }
 
     public String getACTIVIDAD() {
@@ -168,6 +170,14 @@ public class Actividad implements Comparable<Actividad> {
 
     public void setFASE(Integer FASE) {
         this.FASE = FASE;
+    }
+
+    public String getESTADO() {
+        return ESTADO;
+    }
+
+    public void setESTADO(String ESTADO) {
+        this.ESTADO = ESTADO;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

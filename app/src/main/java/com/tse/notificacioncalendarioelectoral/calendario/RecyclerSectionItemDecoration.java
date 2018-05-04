@@ -49,8 +49,9 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
             headerView = inflateHeaderView(parent);
             header = (TextView) headerView.findViewById(R.id.list_item_section_text);
             fixLayoutSize(headerView, parent);
+        }else {
+            fixLayoutSize(headerView, parent);
         }
-
         CharSequence previousHeader = "";
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
