@@ -55,21 +55,19 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
     protected void onBindViewHolder(@NonNull CalendarioViewHolder holder, int position, @NonNull Actividad model) {
 
         holder.txtActividad.setText(model.getACTIVIDAD());
-       // holder.txtDia.setText(String.format("%02d",model.getINICIO_DIA()));
-        //holder.txtFechaFin.setText(model.getFIN());
-       // holder.txtEstado.setText("eee" + model.getTIMESTAMP_INICIO());
-        convertir(model.getTIMESTAMP_INICIO());
-       /* if (model.getESTADO().equalsIgnoreCase("EJECUCIÓN")){
-            holder.txtEstado.setText("EN milesegundos " + model.getTIMESTAMP_INICIO());
-            convertir(model.getTIMESTAMP_INICIO());
-            holder.txtEstado.setTextColor(Color.GREEN);
-        }else if (model.getESTADO().equalsIgnoreCase("FINALIZADA")){
+        holder.txtEstado.setText(model.getESTADO());
+
+        if (model.getESTADO().substring(0,1).equalsIgnoreCase("e")){
             holder.txtEstado.setText(model.getESTADO());
-            holder.txtEstado.setTextColor(Color.RED);
+            holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.inprocess));
+        }
+        else if (model.getESTADO().substring(0,1).equalsIgnoreCase("f")){
+            holder.txtEstado.setText(model.getESTADO());
+            holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.end));
         }else {
             holder.txtEstado.setText(model.getESTADO());
             holder.txtEstado.setTextColor(Color.GRAY);
-        }*/
+        }
        //holder.mTimelineView.setMarkerColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.colorAccent));
 
     }
@@ -107,20 +105,14 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
     public static class CalendarioViewHolder extends RecyclerView.ViewHolder{
 
         private TextView txtActividad;
-       // private TextView txtDia;
         private TextView txtFechaFin;
         private TextView txtEstado;
-       // private TimelineView mTimelineView;
 
         public CalendarioViewHolder(View itemView, int viewType) {
 
             super(itemView);
             txtActividad = itemView.findViewById(R.id.txtDescripcionActiviad);
-            //txtDia = itemView.findViewById(R.id.textDia);
-            //txtFechaFin = itemView.findViewById(R.id.txtFechaFin);
-           // txtEstado = itemView.findViewById(R.id.txtEstado);
-           // mTimelineView = itemView.findViewById(R.id.time_marker);
-           // mTimelineView.initLine(viewType);
+            txtEstado = itemView.findViewById(R.id.txtEstado);
 
         }
     }

@@ -244,12 +244,14 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
             @Override
             public boolean isSection(int position) {
                // return position == 0 || people.get(position).getINICIO_MES_T().charAt(0) != people.get(position - 1).getINICIO_MES_T().charAt(0);
-               return position == 0 || !people.get(position).getINICIO_MES_T().equals(people.get(position - 1).getINICIO_MES_T().toString());
+              // return position == 0 || !people.get(position).getINICIO_MES_T().equals(people.get(position - 1).getINICIO_MES_T().toString());
+                return position == 0 || !convertir(people.get(position).getTIMESTAMP_INICIO()).equals(convertir(people.get(position - 1).getTIMESTAMP_INICIO()));
             }
 
             @Override
             public String getSectionHeader(int position) {
-                return firstUpper(people.get(position).getINICIO_MES_T().toString());
+                //return firstUpper(people.get(position).getINICIO_MES_T().toString());
+                return convertir(people.get(position).getTIMESTAMP_INICIO());
             }
 
            /*
@@ -268,7 +270,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     public String convertir(long timestamp){
         Timestamp stamp = new Timestamp(timestamp);
         Date date = new Date(stamp.getTime() * 1000);
-        DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat f = new SimpleDateFormat("dd MMMM yyyy");
         Calendar c = Calendar.getInstance();
         long days = TimeUnit.MILLISECONDS.toDays(c.getTimeInMillis());
         f.setTimeZone(TimeZone.getTimeZone("GMT"));
