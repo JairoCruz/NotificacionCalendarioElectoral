@@ -4,6 +4,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
+import java.util.Map;
+
 /**
  * Created by TSE on 7/9/2017.
  */
@@ -27,13 +29,14 @@ public class Actividad implements Comparable<Actividad> {
     private long TIMESTAMP_FIN;
     private Integer FASE;
     private String ESTADO;
+    private Map<String, Integer> DIAS_RESTANTES;
 
 
     public Actividad() {
     }
 
 
-    public Actividad(String ACTIVIDAD, String INICIO, String FIN, String RESPONSABLES, Integer INICIO_DIA, String INICIO_MES_T, Integer INICIO_MES, Integer INICIO_AÑO, Integer FIN_DIA, Integer FIN_MES, String FIN_MES_T, Integer FIN_AÑO, long TIMESTAMP_INICIO, long TIMESTAMP_FIN, Integer FASE, String ESTADO) {
+    public Actividad(String ACTIVIDAD, String INICIO, String FIN, String RESPONSABLES, Integer INICIO_DIA, String INICIO_MES_T, Integer INICIO_MES, Integer INICIO_AÑO, Integer FIN_DIA, Integer FIN_MES, String FIN_MES_T, Integer FIN_AÑO, long TIMESTAMP_INICIO, long TIMESTAMP_FIN, Integer FASE, String ESTADO, Map<String, Integer> DIAS_RESTANTES) {
         this.ACTIVIDAD = ACTIVIDAD;
         this.INICIO = INICIO;
         this.FIN = FIN;
@@ -50,6 +53,7 @@ public class Actividad implements Comparable<Actividad> {
         this.TIMESTAMP_FIN = TIMESTAMP_FIN;
         this.FASE = FASE;
         this.ESTADO = ESTADO;
+        this.DIAS_RESTANTES = DIAS_RESTANTES;
     }
 
     public String getACTIVIDAD() {
@@ -150,6 +154,14 @@ public class Actividad implements Comparable<Actividad> {
 
     public long getTIMESTAMP_INICIO() {
         return TIMESTAMP_INICIO;
+    }
+
+    public Map<String, Integer> getDIAS_RESTANTES() {
+        return DIAS_RESTANTES;
+    }
+
+    public void setDIAS_RESTANTES(Map<String,Integer> DIAS_RESTANTES) {
+        this.DIAS_RESTANTES = DIAS_RESTANTES;
     }
 
     public void setTIMESTAMP_INICIO(long TIMESTAMP_INICIO) {

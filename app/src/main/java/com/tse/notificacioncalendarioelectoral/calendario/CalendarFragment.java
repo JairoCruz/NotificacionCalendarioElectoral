@@ -4,6 +4,7 @@ package com.tse.notificacioncalendarioelectoral.calendario;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -64,6 +65,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         return calendarFragment;
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -88,8 +90,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         recyclerViewCalendar = viewFragment.findViewById(R.id.recyclerViewCalendario);
         progressBar = viewFragment.findViewById(R.id.progressBar2);
 
-
-        myRef.child("ACTIVIDADES").addValueEventListener(new ValueEventListener() {
+        // He cambiado el addValueEventListener por addListenerForSingleValueEvent para leer los datos de los encabezados
+        // del ItemDecoration una sola vez, ya que con el anterior metodo cada vez que se actualizaban los datos
+        // el itemDecoration cambiaba y le agregaba un espacio
+        myRef.child("ACTIVIDADES").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Actividad> listActividad = new ArrayList<>();

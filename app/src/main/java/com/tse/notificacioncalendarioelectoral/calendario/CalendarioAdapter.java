@@ -1,6 +1,5 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -56,16 +55,17 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
 
         holder.txtActividad.setText(model.getACTIVIDAD());
         holder.txtEstado.setText(model.getESTADO());
+        Log.e("Dias restantes", " " + model.getDIAS_RESTANTES().get("INICIO"));
 
-        if (model.getESTADO().substring(0,1).equalsIgnoreCase("e")){
-            holder.txtEstado.setText(model.getESTADO());
+        if (model.getESTADO().equalsIgnoreCase("en proceso")){
+            holder.txtEstado.setText(model.getESTADO() + " - " + "finaliza en " + model.getDIAS_RESTANTES().get("FIN") + ((model.getDIAS_RESTANTES().get("FIN") > 1) ? " días" : " día"));
             holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.inprocess));
         }
-        else if (model.getESTADO().substring(0,1).equalsIgnoreCase("f")){
+        else if (model.getESTADO().equalsIgnoreCase("finalizado")){
             holder.txtEstado.setText(model.getESTADO());
             holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.end));
         }else {
-            holder.txtEstado.setText(model.getESTADO());
+            holder.txtEstado.setText(model.getESTADO() + " " + model.getDIAS_RESTANTES().get("INICIO") + ((model.getDIAS_RESTANTES().get("INICIO") > 1) ? " días" : " día"));
             holder.txtEstado.setTextColor(Color.GRAY);
         }
        //holder.mTimelineView.setMarkerColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.colorAccent));
@@ -92,6 +92,7 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
     @Override
     public void onDataChanged() {
         calendarFragment.loading(false);
+
     }
 
     @Override
