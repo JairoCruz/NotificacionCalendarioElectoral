@@ -4,14 +4,23 @@
     <item android:id="@+id/TODOS"
         android:title="@string/nav_todos"/>
 
-    <item android:id="@+id/EJECUCION"
+    <item android:id="@+id/INICIA_HOY"
+        android:title="@string/actividades_inicia_hoy"/>
+
+    <item android:id="@+id/FINALIZA_HOY"
+        android:title="@string/actividades_finalizan_hoy"/>
+
+    <item android:id="@+id/PROXIMAS"
+        android:title="@string/actividades_proximas"/>
+
+    <item android:id="@+id/EN_PROCESO"
         android:title="@string/nav_ejecucion"/>
 
-    <item android:id="@+id/FINALIZADA"
+    <item android:id="@+id/FINALIZADO"
         android:title="@string/nav_finalizada"/>
 
-    <item android:id="@+id/LIMPIAR"
-        android:title="@string/nav_LIMPIAR_FILTRO"/>
+    <!--<item android:id="@+id/LIMPIAR"-->
+        <!--android:title="@string/nav_LIMPIAR_FILTRO"/>-->
 
 
 

@@ -13,6 +13,8 @@ import java.util.Map;
 public class Actividad implements Comparable<Actividad> {
 
 
+
+
     private String ACTIVIDAD;
     private String INICIO;
     private String FIN;

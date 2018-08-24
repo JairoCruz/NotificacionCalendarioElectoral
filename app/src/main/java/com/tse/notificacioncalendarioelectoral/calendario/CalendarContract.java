@@ -17,6 +17,10 @@ public interface CalendarContract {
 
         void showFilterPopUpMenu();
 
+        void showLoadingView(boolean show);
+
+        void showDecorationCalendar(Query reference, String filtro);
+
     }
 
 
@@ -26,6 +30,10 @@ public interface CalendarContract {
         void loadEventCalendar();
 
         void filterEventCalendar(String filtro);
+
+        void callLoadingView(boolean show);
+
+        void loadDecorationCalendar();
 
     }
 }

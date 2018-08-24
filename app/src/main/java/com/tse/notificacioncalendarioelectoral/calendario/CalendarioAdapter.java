@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.github.vipulasri.timelineview.TimelineView;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.Actividad;
@@ -53,24 +55,32 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
     @Override
     protected void onBindViewHolder(@NonNull CalendarioViewHolder holder, int position, @NonNull Actividad model) {
 
-        holder.txtActividad.setText(model.getACTIVIDAD());
-        holder.txtEstado.setText(model.getESTADO());
-        Log.e("Dias restantes", " " + model.getDIAS_RESTANTES().get("INICIO"));
+        if(model == null){
 
-        if (model.getESTADO().equalsIgnoreCase("en proceso")){
-            holder.txtEstado.setText(model.getESTADO() + " - " + "finaliza en " + model.getDIAS_RESTANTES().get("FIN") + ((model.getDIAS_RESTANTES().get("FIN") > 1) ? " días" : " día"));
-            holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.inprocess));
-        }
-        else if (model.getESTADO().equalsIgnoreCase("finalizado")){
-            holder.txtEstado.setText(model.getESTADO());
-            holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.end));
         }else {
-            holder.txtEstado.setText(model.getESTADO() + " " + model.getDIAS_RESTANTES().get("INICIO") + ((model.getDIAS_RESTANTES().get("INICIO") > 1) ? " días" : " día"));
-            holder.txtEstado.setTextColor(Color.GRAY);
+
+            holder.txtActividad.setText(model.getACTIVIDAD());
+            holder.txtEstado.setText(model.getESTADO());
+            // Log.e("Dias restantes", " " + model.getDIAS_RESTANTES().get("INICIO"));
+
+            if (model.getESTADO().equalsIgnoreCase("en proceso")) {
+                holder.txtEstado.setText(model.getESTADO() + " - " + "finaliza en " + model.getDIAS_RESTANTES().get("FIN") + ((model.getDIAS_RESTANTES().get("FIN") > 1) ? " días" : " día"));
+                holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.inprocess));
+            } else if (model.getESTADO().equalsIgnoreCase("finalizado")) {
+                holder.txtEstado.setText(model.getESTADO());
+                holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.end));
+            } else if (model.getESTADO().equalsIgnoreCase("Inicia hoy") || model.getESTADO().equalsIgnoreCase("Finaliza hoy")) {
+                holder.txtEstado.setText(model.getESTADO());
+                holder.txtEstado.setTextColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.end));
+            } else {
+                holder.txtEstado.setText(model.getESTADO() + " " + model.getDIAS_RESTANTES().get("INICIO") + ((model.getDIAS_RESTANTES().get("INICIO") > 1) ? " días" : " día"));
+                holder.txtEstado.setTextColor(Color.GRAY);
+            }
+            //holder.mTimelineView.setMarkerColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.colorAccent));
         }
-       //holder.mTimelineView.setMarkerColor(ContextCompat.getColor(calendarFragment.getContext(), R.color.colorAccent));
 
     }
+
 
     @Override
     public CalendarioViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -91,7 +101,16 @@ public class CalendarioAdapter extends FirebaseRecyclerAdapter<Actividad, Calend
 
     @Override
     public void onDataChanged() {
-        calendarFragment.loading(false);
+        //calendarFragment.showLoadingView(false);
+       // Log.e("Cambia una sola cosa","cambio");
+       calendarFragment.crossfade();
+
+    }
+
+    @Override
+    public void onChildChanged(@NonNull ChangeEventType type, @NonNull DataSnapshot snapshot, int newIndex, int oldIndex) {
+        super.onChildChanged(type, snapshot, newIndex, oldIndex);
+       // Log.e("change ", "Valor " + type.name()  + " " + snapshot.getKey() + " "  + newIndex + " " + oldIndex );
 
     }
 

@@ -1,9 +1,15 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.tse.notificacioncalendarioelectoral.R;
+import com.tse.notificacioncalendarioelectoral.utils.Utils;
 
 /**
  * Created by TSE on 7/9/2017.
@@ -30,12 +36,24 @@ public class CalendarPresenter implements CalendarContract.Presenter {
 
     }
 
+
+    @Override
+    public void callLoadingView(boolean show) {
+        calendarContractView.showLoadingView(show);
+    }
+
+    @Override
+    public void loadDecorationCalendar() {
+        calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todos");
+    }
+
     @Override
     public void loadEventCalendar() {
 
+        // .startAt(1509494400).endAt(1563148800)
 
 
-       calendarContractView.showEventCalendar(myRef.child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO").startAt(1475452800).endAt(1543190400));
+       calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
        // calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("INICIO_AÑO"));
         /*myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -53,26 +71,47 @@ public class CalendarPresenter implements CalendarContract.Presenter {
         });*/
 
 
-
+        // Resources.getSystem().getString(R.string.nav_todos)
 
     }
 
     @Override
     public void filterEventCalendar(String filtro) {
         switch (filtro){
-            case "TODOS":
-                Log.e("todas", filtro);
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO"));
+            case "TODAS":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todos");
+                callLoadingView(true);
                 break;
-            case "EJECUCIÓN":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("ESTADO").equalTo("EJECUCIÓN"));
+            case "EN PROCESO":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("En proceso"), "En proceso");
+                callLoadingView(true);
                 break;
-            case "FINALIZADA":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("ESTADO").equalTo("FINALIZADA"));
+            case "FINALIZADO":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizado"));
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizado"), "Finalizado");
+                callLoadingView(true);
                 break;
-            case "LIMPIAR_FILTRO":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("TIMESTAMP_INICIO").startAt(1514851200).endAt(1543190400));
+            case "INICIAN HOY":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia hoy"));
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia hoy"), "Inicia hoy");
+                callLoadingView(true);
                 break;
+            case "FINALIZAN HOY":
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizan hoy"));
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizan hoy"), "Finalizan hoy");
+                callLoadingView(true);
+                break;
+            case "PROXIMAS":
+                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Inicia en");
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia en"));
+
+                callLoadingView(true);
+                break;
+//            case "LIMPIAR_FILTRO":
+//                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("TIMESTAMP_INICIO").startAt(1514851200).endAt(1543190400));
+//                break;
 
         }
     }
