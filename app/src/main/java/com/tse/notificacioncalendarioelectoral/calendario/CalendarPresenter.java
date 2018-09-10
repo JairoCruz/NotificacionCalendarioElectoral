@@ -6,10 +6,18 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.tse.notificacioncalendarioelectoral.R;
+import com.tse.notificacioncalendarioelectoral.data.Actividad;
 import com.tse.notificacioncalendarioelectoral.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TSE on 7/9/2017.
@@ -23,6 +31,7 @@ public class CalendarPresenter implements CalendarContract.Presenter {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    String CALENDARIO_PRESENTER = CalendarPresenter.class.getSimpleName();
 
 
 
@@ -37,23 +46,19 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     }
 
 
+
     @Override
     public void callLoadingView(boolean show) {
         calendarContractView.showLoadingView(show);
     }
 
-    @Override
-    public void loadDecorationCalendar() {
-        calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todos");
-    }
 
     @Override
     public void loadEventCalendar() {
 
-        // .startAt(1509494400).endAt(1563148800)
+      calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todas");
 
 
-       calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
        // calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("INICIO_AÑO"));
         /*myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,40 +84,23 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     public void filterEventCalendar(String filtro) {
         switch (filtro){
             case "TODAS":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todos");
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "todas");
                 break;
             case "EN PROCESO":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"));
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("En proceso"), "En proceso");
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "En proceso");
                 break;
             case "FINALIZADO":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizado"));
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizado"), "Finalizado");
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Finalizado");
                 break;
             case "INICIAN HOY":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia hoy"));
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia hoy"), "Inicia hoy");
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Inicia hoy");
                 break;
             case "FINALIZAN HOY":
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizan hoy"));
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Finalizan hoy"), "Finalizan hoy");
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Finaliza hoy");
                 break;
             case "PROXIMAS":
-                calendarContractView.showDecorationCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Inicia en");
-                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("ESTADO").equalTo("Inicia en"));
-
-                callLoadingView(true);
+                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO"), "Inicia en");
                 break;
-//            case "LIMPIAR_FILTRO":
-//                calendarContractView.showEventCalendar(myRef.child("CALENDARIO").orderByChild("TIMESTAMP_INICIO").startAt(1514851200).endAt(1543190400));
-//                break;
-
         }
     }
 

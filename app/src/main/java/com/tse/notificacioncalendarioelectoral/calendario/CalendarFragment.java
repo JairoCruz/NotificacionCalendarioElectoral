@@ -1,13 +1,8 @@
 package com.tse.notificacioncalendarioelectoral.calendario;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -19,21 +14,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tse.notificacioncalendarioelectoral.MainActivity;
 import com.tse.notificacioncalendarioelectoral.R;
 import com.tse.notificacioncalendarioelectoral.data.Actividad;
-import com.tse.notificacioncalendarioelectoral.utils.Utils;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -47,18 +38,24 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CalendarFragment extends Fragment implements CalendarContract.View{
+    
+    private String TAG = CalendarFragment.class.getSimpleName();
 
 
     private CalendarContract.Presenter calendarContractPresenter;
-    private CalendarioAdapter calendarioAdapter;
+    private CalendarioActividadAdapter calendarioActividadAdapter;
     private int mShortAnimationDuration;
+    private List<Actividad> actividades;
+    RecyclerSectionItemDecoration sectionItemDecoration = null;
 
     RecyclerView recyclerViewCalendar;
     ProgressBar progressBar;
+    LinearLayout layout_no_actividad;
 
 
     public CalendarFragment() {
@@ -74,22 +71,18 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
     @Override
     public void onStart() {
         super.onStart();
-        showPro();
-
-
+        Log.e(TAG, "OnStart");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        recyclerViewCalendar.setVisibility(View.GONE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //showPro();
-
+        Log.e(TAG, "OnResume");
     }
 
 
@@ -99,23 +92,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
                              Bundle savedInstanceState) {
 
 
-
-
         View viewFragment = inflater.inflate(R.layout.fragment_calendar, container, false);
         recyclerViewCalendar = viewFragment.findViewById(R.id.recyclerViewCalendario);
         progressBar = viewFragment.findViewById(R.id.progressBar2);
+        layout_no_actividad = viewFragment.findViewById(R.id.layout_no_actividad);
 
 
-        recyclerViewCalendar.setVisibility(View.GONE);
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-
-
-        // He cambiado el addValueEventListener por addListenerForSingleValueEvent para leer los datos de los encabezados
-        // del ItemDecoration una sola vez, ya que con el anterior metodo cada vez que se actualizaban los datos
-        // el itemDecoration cambiaba y le agregaba un espacio
-
-        calendarContractPresenter.loadDecorationCalendar();
 
 
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -124,11 +107,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
 
         setHasOptionsMenu(true);
 
-
+        Log.e(TAG, "OnCreateView");
 
         return viewFragment;
     }
 
+    // Este metodo es util para la Decoracion del recyclerview
     private List<Actividad> getCalendario(List<Actividad> c){
         Collections.sort(c);
         /*for (int j = 0; j < c.size(); j++){
@@ -177,30 +161,33 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
                     case R.id.INICIA_HOY:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_inician_hoy));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
                     case R.id.FINALIZA_HOY:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_finalizan_hoy));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
                     case R.id.EN_PROCESO:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_ejecucion));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
                     case R.id.PROXIMAS:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_proximas));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
                     case  R.id.FINALIZADO:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_finalizada));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
                     case R.id.TODOS:
                         calendarContractPresenter.filterEventCalendar(getString(R.string.nav_todos));
                         recyclerViewCalendar.setVisibility(View.GONE);
+                        layout_no_actividad.setVisibility(View.GONE);
                         break;
-//                    case  R.id.LIMPIAR:
-//                        calendarContractPresenter.filterEventCalendar("LIMPIAR_FILTRO");
-//                        break;
                 }
                 return true;
             }
@@ -218,25 +205,82 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
             throw new RuntimeException("El presenter no puede ser nulo");
         }
 
-
-
     }
 
 
 
     @Override
-    public void showEventCalendar(Query reference) {
+    public void showEventCalendar(Query reference,final String filtro) {
 
-        Context c = getContext();
-        FirebaseRecyclerOptions<Actividad> options = new FirebaseRecyclerOptions.Builder<Actividad>()
-                .setQuery(reference, Actividad.class)
-                // Establecer esta propieda hace que automaticamente se maneje el onStart y onStop en el ciclo de vida del adaptador
-                .setLifecycleOwner(this)
-                .build();
-        calendarioAdapter = new CalendarioAdapter(options, this);
-        recyclerViewCalendar.setAdapter(calendarioAdapter);
+        showLoadingView(true);
 
+        reference.keepSynced(true);
+
+        final List<Actividad> listActividad = new ArrayList<>();
+
+        reference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (!listActividad.isEmpty()){
+                    listActividad.clear();
+                }
+
+                Actividad actividad;
+
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+
+                    actividad = snapshot.getValue(Actividad.class);
+
+                    if (filtro == "En proceso" && actividad.getESTADO().equals(filtro)){
+                        listActividad.add(actividad);
+                    }else if (filtro == "Finalizado" && actividad.getESTADO().equals(filtro)){
+                        listActividad.add(actividad);
+                    }else if(filtro == "Inicia hoy" && actividad.getESTADO().equals(filtro)){
+                        listActividad.add(actividad);
+                    }else if(filtro == "Finaliza hoy" && actividad.getESTADO().equals(filtro)){
+                        listActividad.add(actividad);
+                        Log.e(TAG, "Finaliza hoy");
+                    }else if(filtro == "Inicia en" && actividad.getESTADO().equals(filtro)){
+                        listActividad.add(actividad);
+                    }else if(filtro == "todas"){
+                        listActividad.add(actividad);
+                    }
+                }
+
+                if (listActividad.isEmpty()){
+                    showLoadingView(false);
+                    layout_no_actividad.setVisibility(View.VISIBLE);
+                    return;
+                }else{
+                    layout_no_actividad.setVisibility(View.GONE);
+                }
+
+
+                if(sectionItemDecoration != null){
+                    recyclerViewCalendar.removeItemDecoration(sectionItemDecoration);
+                }
+
+                sectionItemDecoration = new RecyclerSectionItemDecoration(getResources().getDimensionPixelSize(R.dimen.recycler_section_header_height),true, getSectionCallback(getCalendario(listActividad)));
+                recyclerViewCalendar.addItemDecoration(sectionItemDecoration);
+
+                calendarioActividadAdapter = new CalendarioActividadAdapter(listActividad, CalendarFragment.this);
+                calendarioActividadAdapter.notifyDataSetChanged();
+                recyclerViewCalendar.setAdapter(calendarioActividadAdapter);
+
+                showLoadingView(false);
+                showRecyclerViewAnimation();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG,  "Error " + databaseError.getDetails());
+            }
+        });
     }
+
 
     @Override
     public void showLoadingView(boolean show){
@@ -249,90 +293,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
 
     }
 
-    @Override
-    public void showDecorationCalendar(Query reference, final String filtro) {
 
-       // FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //DatabaseReference myRef = database.getReference();
-        // myRef.child("CALENDARIO").child(Utils.anio_2019).child("ACTIVIDADES").orderByChild("TIMESTAMP_INICIO")
-
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Actividad> listActividad = new ArrayList<>();
-                Actividad a = new Actividad();
-
-                RecyclerSectionItemDecoration sectionItemDecoration = null;
-
-                for (DataSnapshot msgSnapshot: dataSnapshot.getChildren()){
-                    Actividad actividad = msgSnapshot.getValue(Actividad.class);
-
-
-//                    if (filtro == "En proceso" && actividad.getESTADO().equals("En proceso")){
-//                        Log.e("msg", "nada");
-//                        a = actividad;
-//                        listActividad.add(a);
-//                        }
-//                        else if(filtro == "Finalizado" && actividad.getESTADO().equals("Finalizado")){
-//                        Log.e("msg", "nada de nada");
-//                            a = actividad;
-//                            listActividad.add(a);
-//                    }
-
-
-
-
-
-                    if (filtro == "En proceso" && actividad.getESTADO().equals(filtro)){
-                        listActividad.add(actividad);
-                        Log.e("Msg", "En proceso");
-                    }
-                    else if (filtro ==  "Finalizado" && actividad.getESTADO().equals(filtro)){
-                        listActividad.add(actividad);
-                        Log.e("Msg", "Finalizado");
-                    }else if (filtro ==  "Inicia hoy" && actividad.getESTADO().equals(filtro)){
-                        listActividad.add(actividad);
-                        Log.e("Msg", "Inicia hoy");
-                    }else if (filtro ==  "Finalizan hoy" && actividad.getESTADO().equals(filtro)){
-                        listActividad.add(actividad);
-                        Log.e("Msg", "Finaliza hoy");
-                    }else if(filtro ==  "Inicia en" && actividad.getESTADO().equals(filtro)){
-                        recyclerViewCalendar.removeItemDecoration(sectionItemDecoration);
-                        listActividad.add(actividad);
-                        Log.e("Msg", "Inicia en " + actividad.getINICIO_MES_T() + " " + actividad.getACTIVIDAD());
-
-                    }else if(filtro == "todos"){
-                        listActividad.add(actividad);
-                        Log.e("Msg", "todos " + actividad.getINICIO_MES_T() + " " + actividad.getESTADO());
-                    }
-                    //Log.e("Datos secuencia", actividad.getINICIO().subSequence(0,10) + " " + actividad.getESTADO());
-                    // Log.e("Fecha desde objeto", actividad.getINICIO_MES_T());
-                }
-
-                // Log.e("longitud", " : " + listActividad.get(0).getACTIVIDAD());
-
-                Log.e("tamaño lista", "tamaño " + listActividad.size());
-
-                // =  new RecyclerSectionItemDecoration(getResources().getDimensionPixelSize(R.dimen.recycler_section_header_height),true, getSectionCallback(getCalendario(listActividad)));
-//                if (sectionItemDecoration == null){
-//                    sectionItemDecoration = new RecyclerSectionItemDecoration(getResources().getDimensionPixelSize(R.dimen.recycler_section_header_height),true, getSectionCallback(getCalendario(listActividad)));
-//                    recyclerViewCalendar.addItemDecoration(sectionItemDecoration);
-//                    Log.e("if", "nulo");
-//                }else {
-//                    Log.e("if", "ni entro");
-//
-//                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Error", "Fallo por esto:" + databaseError.getMessage());
-            }
-        });
-
-    }
 
     private RecyclerSectionItemDecoration.SectionCallback getSectionCallback(final List<Actividad> people) {
 
@@ -401,7 +362,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
         getActivity().finish();
     }
 
-    public void crossfade() {
+    public void showRecyclerViewAnimation() {
         recyclerViewCalendar.setAlpha(0f);
         recyclerViewCalendar.setVisibility(View.VISIBLE);
 
@@ -410,15 +371,15 @@ public class CalendarFragment extends Fragment implements CalendarContract.View{
                             .setDuration(mShortAnimationDuration)
                             .setListener(null);
 
-        progressBar.animate()
-                    .alpha(0f)
-                    .setDuration(mShortAnimationDuration)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                        }
-                    });
+//        progressBar.animate()
+//                    .alpha(0f)
+//                    .setDuration(mShortAnimationDuration)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            super.onAnimationEnd(animation);
+//                        }
+//                    });
     }
 
     public void showPro(){

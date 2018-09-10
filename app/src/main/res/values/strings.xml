@@ -12,10 +12,12 @@
 
     <string name="calendario_actualizado">Calendario electoral 2017-2018</string>
     <string name="txt_fecha_actualizacion">actualizado hasta: 07/09/2017</string>
+    <string name="calendario_electoral_2019">Calendario Electoral 2019</string>
 
 
     <string name="actividad">Actividades</string>
     <string name="descripcion_actividad">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
+    <string name="no_actividades">No hay actividades programadas para este día</string>
 
     <string name="fecha_inicio">Inicio</string>
     <string name="fecha_fin">Fin</string>

@@ -30,7 +30,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         // Set Up Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
-        toolbar.setSubtitle(getResources().getString(R.string.actividad));
+        toolbar.setTitle(getResources().getString(R.string.actividad));
+        toolbar.setSubtitle(getResources().getString(R.string.calendario_electoral_2019));
         setSupportActionBar(toolbar);
 
         CalendarFragment calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.layoutFragmentCalendar);

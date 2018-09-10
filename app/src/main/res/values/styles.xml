@@ -9,6 +9,21 @@
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-
+       
     </style>
+
+    <style name="ToolbarTextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Subtitle">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+
 </resources>
